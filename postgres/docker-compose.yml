@@ -1,0 +1,24 @@
+# RUN: docker-compose -f .\docker-compose.yml --env-file .env up -d --build
+# STOP: docker-compose -f .\docker-compose.yml stop
+# START: docker-compose -f .\docker-compose.yml start
+# CLEAN: docker-compose -f .\docker-compose.yml down -v
+
+version: '3'
+
+services:
+  postgres:
+    container_name: postgres
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.postgres
+    image: "i_postgres"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_USER}
+    volumes:
+      - ./data:/opt/postgres:ro
+      - ./logs:/var/log
+
