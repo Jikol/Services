@@ -1,0 +1,21 @@
+# RUN: docker-compose -f .\docker-compose.yml up -d --build
+# STOP: docker-compose -f .\docker-compose.yml stop
+# START: docker-compose -f .\docker-compose.yml start
+# CLEAN: docker-compose -f .\docker-compose.yml down -v
+
+version: '3'
+
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.nginx
+    image: "i_nginx"
+    ports:
+      - "80:80"
+    volumes:
+      - ./www:/var/www:ro
+      - ./confs/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./confs/nginx.conf:/etc/nginx/nginx.conf:ro
+
