@@ -1,25 +1,21 @@
-# RUN: docker-compose -f .\docker-compose.yml --env-file .env up -d --build
+# UP: docker-compose -f .\docker-compose.yml up -d --build --force-recreate
 # STOP: docker-compose -f .\docker-compose.yml stop
 # START: docker-compose -f .\docker-compose.yml start
-# CLEAN: docker-compose -f .\docker-compose.yml down -v
-
-version: '3'
+# DOWN: docker-compose -f .\docker-compose.yml down -v --rmi all
 
 services:
   rabbitmq:
     container_name: rabbitmq
-    hostname: rabbitmq
     build:
-      context: ./
-      dockerfile: ./Dockerfile.rabbitmq
-    image: "i_rabbitmq"
+      dockerfile: ./Rabbitmq.dockerfile
+    image: i_rabbitmq
     environment:
-      - RABBITMQ_DEFAULT_USER=${USER}
-      - RABBITMQ_DEFAULT_PASS=${PASSWORD}
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
     ports:
-      - "5672:5672"
-      - "15672:15672"
-      - "15675:15675"
+      - 5672:5672
+      - 15672:15672
+      - 15675:15675
     volumes:
       - ./logs:/var/log
 
